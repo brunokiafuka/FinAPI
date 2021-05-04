@@ -73,7 +73,14 @@ app.get("/account", verifyIfAccountCPFExists, (req, res) => {
 app.delete("/account", verifyIfAccountCPFExists, (req, res) => {
     const { customer } = req;
 
-    customers.splice(customer, 1);
+    const indexToRemove = customers.findIndex(
+        item => item.cpf === customer.cpf);
+
+    if (indexToRemove === -1) {
+        return response.status(404).json({ error: 'customer not found' });
+    }
+
+    costumers.splice(indexToRemove, 1);
 
     return res.status(200).json(customers);
 });
